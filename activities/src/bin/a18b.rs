@@ -97,6 +97,15 @@ fn authorize(
     location: ProtectedLocation,
 ) -> Result<AuthorizationStatus, String> {
     // put your code here
+    let connection = Database::connect()?;
+    let employee = connection.find_employee(employee_name)?;
+    let keycard = connection.get_keycard(&employee)?;
+    let required_access_level = location.required_access_level();
+    if keycard.access_level >= required_access_level {
+        Ok(AuthorizationStatus::Allow)
+    } else {
+        Ok(AuthorizationStatus::Deny)
+    }
 }
 
 fn main() {
