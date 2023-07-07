@@ -1,0 +1,36 @@
+
+running 1 test
+test tests::test_all_caps ... FAILED
+
+failures:
+
+---- tests::test_all_caps stdout ----
+thread 'tests::test_all_caps' panicked at 'assertion failed: `(left == right)`
+  left: `"HELLO"`,
+ right: `"hello"`', src/bin/demo_test.rs:15:9
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    tests::test_all_caps
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 1 test
+test tests::test_all_caps ... FAILED
+
+failures:
+
+---- tests::test_all_caps stdout ----
+thread 'tests::test_all_caps' panicked at 'assertion failed: `(left == right)`
+  left: `"HELLO"`,
+ right: `"hello"`', src/bin/demo_test.rs:15:9
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    tests::test_all_caps
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

@@ -25,6 +25,7 @@
 
 use std::io::{self, Write};
 
+#[derive(Debug)]
 enum PowerState {
     Off,
     Sleep,
@@ -33,13 +34,28 @@ enum PowerState {
     Hibernate,
 }
 
-fn print_power_message(state: &PowerState) {
+impl PowerState {
+    fn new(state: &str) -> Option<PowerState> {
+        let state = state.trim().to_lowercase();
+        match state.as_str() {
+            "off" => Some(PowerState::Off),
+            "sleep" => Some(PowerState::Sleep),
+            "reboot" => Some(PowerState::Reboot),
+            "shutdown" => Some(PowerState::Shutdown),
+            "hibernate" => Some(PowerState::Hibernate),
+            _ => None,
+        }
+    }
+}
+
+fn print_power_action(state: PowerState) {
+    use PowerState::*;
     match state {
-        PowerState::Off => println!("Powering off"),
-        PowerState::Sleep => println!("Sleeping"),
-        PowerState::Reboot => println!("Rebooting"),
-        PowerState::Shutdown => println!("Shutting down"),
-        PowerState::Hibernate => println!("Hibernating"),
+        Off => println!("Powering off"),
+        Sleep => println!("Sleeping"),
+        Reboot => println!("Rebooting"),
+        Shutdown => println!("Shutting down"),
+        Hibernate => println!("Hibernating"),
     }
 }
 
@@ -47,16 +63,13 @@ fn main() {
     let mut input = String::new();
     print!("Enter a power state: ");
     io::stdout().flush().expect("Failed to flush stdout");
-    io::stdin()
-        .read_line(&mut input)
-        .expect("Failed to read line");
-    let state = match input.trim().to_lowercase().as_str() {
-        "off" => PowerState::Off,
-        "sleep" => PowerState::Sleep,
-        "reboot" => PowerState::Reboot,
-        "shutdown" => PowerState::Shutdown,
-        "hibernate" => PowerState::Hibernate,
-        _ => panic!("Invalid power state"),
-    };
-    print_power_message(&state);
+    let user_input_status = io::stdin().read_line(&mut input);
+    if user_input_status.is_ok() {
+        match PowerState::new(&input) {
+            Some(state) => print_power_action(state),
+            None => println!("Invalid power state"),
+        }
+    } else {
+        println!("Failed to read user input");
+    }
 }

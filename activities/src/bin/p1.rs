@@ -28,5 +28,83 @@
 //   the functionality for that menu in isolation.
 // * A vector is the easiest way to store the bills at stage 1, but a
 //   hashmap will be easier to work with at stages 2 and 3.
+use std::io;
 
-fn main() {}
+struct Bill {
+    name: String,
+    amount: f64,
+}
+
+struct Bills {
+    inner: Vec<Bill>,
+}
+
+impl Bills {
+    fn new() -> Self {
+        Self { inner: vec![] }
+    }
+    fn add(&mut self, bill: Bill) {
+        self.inner.push(bill);
+    }
+    fn get_all(&self) -> Vec<&Bill> {
+        self.inner.iter().collect()
+    }
+}
+
+fn get_input() -> Option<String> {
+    let mut buffer = String::new();
+    while io::stdin().read_line(&mut buffer).is_err() {
+        println!("Error reading input, please try again.");
+    }
+
+    let input = buffer.trim().to_owned();
+    if input.is_empty() {
+        None
+    } else {
+        Some(input)
+    }
+}
+
+enum MainMenu {
+    AddBill,
+    ViewBill,
+}
+
+impl MainMenu {
+    fn from_str(input: &str) -> Option<Self> {
+        match input {
+            "1" => Some(Self::AddBill),
+            "2" => Some(Self::ViewBill),
+            _ => None,
+        }
+    }
+
+    fn show() {
+        println!("");
+        println!("=== Main Menu ===");
+        println!("1. Add bill");
+        println!("2. View bill");
+        println!("");
+        println!("Enter selection: ");
+    }
+}
+
+fn main() {
+    loop {
+        MainMenu::show();
+        let input = get_input().expect("Failed to read input");
+
+        match MainMenu::from_str(input.as_str()) {
+            Some(MainMenu::AddBill) => {
+                println!("Add bill");
+            }
+            Some(MainMenu::ViewBill) => {
+                println!("View bill");
+            }
+            None => {
+                println!("Invalid selection");
+                return;
+            }
+        }
+    }
+}

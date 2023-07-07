@@ -23,12 +23,39 @@ fn clamp(n: i32, lower: i32, upper: i32) -> i32 {
 
 /// Divides a and b.
 fn div(a: i32, b: i32) -> Option<i32> {
+    if b == 0 {
+        return None;
+    }
     Some(a / b)
 }
 
 /// Takes two strings and places them immediately one after another.
 fn concat(first: &str, second: &str) -> String {
-    format!("{} {}", first, second)
+    format!("{}{}", first, second)
 }
 
 fn main() {}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_clamp() {
+        assert_eq!(clamp(1, 2, 3), 2);
+        assert_eq!(clamp(2, 2, 3), 2);
+        assert_eq!(clamp(3, 2, 3), 3);
+        assert_eq!(clamp(4, 2, 3), 3);
+    }
+
+    #[test]
+    fn test_div() {
+        assert_eq!(div(4, 2), Some(2));
+        assert_eq!(div(4, 0), None);
+    }
+
+    #[test]
+    fn test_concat() {
+        assert_eq!(concat("Hello", "World"), "HelloWorld");
+    }
+}
